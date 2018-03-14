@@ -27,8 +27,9 @@ class G_beta:
         self.given_num = tf.placeholder(tf.int32)
 
         # embedded input
-        self.processed_x = tf.transpose(tf.nn.embedding_lookup(self.g_embeddings, self.x),
-                                        perm=[1, 0, 2]) # seq * batch * emb_size
+        with tf.device("/cpu:0"):
+            self.processed_x = tf.transpose(tf.nn.embedding_lookup(self.g_embeddings, self.x),
+                                            perm=[1, 0, 2]) # seq * batch * emb_size
 
 
         #  Unstack the values of a `Tensor` in the TensorArray

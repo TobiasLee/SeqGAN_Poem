@@ -59,12 +59,12 @@ class Discriminator:
         l2_loss = tf.constant(0.0)
         with tf.variable_scope("discriminator"):
             # Embedding:
-            self.W = tf.Variable(
-                tf.random_uniform([vocab_size, embedding_size], -1.0, 1.0),
-                name="W")
-            self.embedded_chars = tf.nn.embedding_lookup(self.W, self.input_x) # batch_size * seq * embedding_size
-            self.embedded_chars_expanded = tf.expand_dims(self.embedded_chars, -1)
-            print("Expanded shape: " , self.embedded_chars_expanded.shape)
+            with tf.device('/cpu:0'), tf.name_scope("embedding"):
+                self.W = tf.Variable(
+                    tf.random_uniform([vocab_size, embedding_size], -1.0, 1.0),
+                    name="W")
+                self.embedded_chars = tf.nn.embedding_lookup(self.W, self.input_x) # batch_size * seq * embedding_size
+                self.embedded_chars_expanded = tf.expand_dims(self.embedded_chars, -1)
             pooled_outputs = list()
             # Create a convolution + maxpool layer for each filter size
             for filter_size, filter_num in zip(filter_sizes, num_filters):
@@ -95,9 +95,9 @@ class Discriminator:
             # print(self.h_pool.shape) # batch * 1 * 1 * total_filters_num
             self.h_pool_flat = tf.reshape(self.h_pool, [-1, total_filters_num]) # batch * total_num
 
-            # remove highway
-            # with tf.name_scope("highway"):
-            #     self.h_highway = highway(self.h_pool_flat, self.h_pool_flat.get_shape()[1], 1, 0)
+            remove highway
+            with tf.name_scope("highway"):
+                self.h_highway = highway(self.h_pool_flat, self.h_pool_flat.get_shape()[1], 1, 0)
 
             # add droppout
             with tf.name_scope("dropout"):
