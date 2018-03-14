@@ -95,7 +95,7 @@ class Discriminator:
             # print(self.h_pool.shape) # batch * 1 * 1 * total_filters_num
             self.h_pool_flat = tf.reshape(self.h_pool, [-1, total_filters_num]) # batch * total_num
 
-            remove highway
+            #remove highway
             with tf.name_scope("highway"):
                 self.h_highway = highway(self.h_pool_flat, self.h_pool_flat.get_shape()[1], 1, 0)
 
