@@ -108,7 +108,7 @@ def main():
         g_beta.update_params()
 
         # train the discriminator
-        for it in range(50):
+        for it in range(10):
             generate_samples(sess, G, BATCH_SIZE, generated_num, negative_file)
             dis_data_loader.load_train_data(positive_file, negative_file)
 
@@ -123,7 +123,7 @@ def main():
                     }
                     _ = sess.run(D.train_op, feed_dict=feed)
 # finnal generation
-    print("Wrting final results to", test_file)
+    print("Wrting final results to test file")
     test_file = "./final2.txt"
     generate_samples(sess, G, BATCH_SIZE, generated_num, test_file)
     print("Finished")
