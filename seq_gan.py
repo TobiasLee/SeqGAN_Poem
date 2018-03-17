@@ -5,7 +5,7 @@ import random
 import numpy as np
 import tensorflow as tf
 from myG_beta import G_beta
-
+import time
 
 dis_filter_sizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
 dis_num_filters = [100, 200, 200, 200, 200, 100, 100, 100, 100, 100, 160, 160]
@@ -59,8 +59,11 @@ def main():
     print('Start pre-training...')
     log.write('pre-training...\n')
     for epoch in range(PRE_EPOCH_NUM):
+        start =time.time()
         loss = pre_train_epoch(sess, G, gen_data_loader)
         print("Epoch ", epoch, " loss: ", loss )
+        print("per epoch time consumed: ", time.time() - start)
+
         # if epoch % 5 == 0:
         #     generate_samples(sess, G, BATCH_SIZE, generated_num, eval_file)
         #     likelihood_data_loader.create_batches(eval_file)
